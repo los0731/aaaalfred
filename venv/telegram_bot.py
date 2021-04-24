@@ -33,8 +33,8 @@ def job():
         pass
 
 # 매일 10:30 에 실행
-# schedule.every().day.at("07:30").do(job)
-schedule.every(10).seconds.do(job)
+schedule.every().day.at("07:00").do(job)
+# schedule.every(10).seconds.do(job)
 
 while True:
     schedule.run_pending()
