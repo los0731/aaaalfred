@@ -59,6 +59,9 @@ def yesterday():
 	yesterday = datetime.today() - timedelta(1)
 	yesterday = yesterday.strftime("%Y-%m-%d") 
 	return yesterday
+def today():
+	result = datetime.today().strftime("%Y-%m-%d") 
+	return result
 
 # 크롤러
 def fnSnapshot(stock):
@@ -366,7 +369,7 @@ def nvPrice(stock):
 
 def hankyungIndustry():
 	with req.Session() as s:
-		date = yesterday()
+		date = today()
 		ua = UserAgent()
 		url = 'http://consensus.hankyung.com/apps.analysis/analysis.list?skinType=industry&search_date=1w&search_text=&now_page=1&type=more'
 		headers = {
@@ -389,14 +392,20 @@ def hankyungIndustry():
 			report_date = val.select('.txt_number')[0].text
 			report_title = val.select('.text_l a')[0].text
 			report_url = "http://consensus.hankyung.com{}".format(val.select('td:last-child a[href]')[0]['href'])
+			print(report_date)	
+			print(report_title)	
+			print(report_url)	
+			print(date)	
+			print('-----------')
 
 			if report_date == date:
-				appendItem = {
-					'제목': report_title,
-					'링크': report_url
-				}
+				appendItem = {}
+				appendItem['제목'] = report_title
+				appendItem['링크'] = report_url
+				
 
 				dict['산업리포트'][date].append(appendItem)
+
 
 	pp('크롤완료: 한경컨센서스-산업')
 	return dict
