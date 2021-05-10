@@ -12,18 +12,17 @@ for idx, i in enumerate(stocks_list()):
     print('\n\n\n##### rowData:\n____________________')
     pp(rowData, width=30)
     
-    
-
     with open("results/data{}.csv".format(date), "a", encoding='utf-8-sig', newline='') as f:
         wr = csv.writer(f)
         if idx == 0:
             wr.writerow(list(rowData.keys()))
         wr.writerow(list(rowData.values()))
     f.close()
-
-    if (idx+1)%400 == 0:
+    
+    if (idx+1)%320 == 0:
         pp('20분간 쉽니다. :-)')
         time.sleep(1200)
     else:
         time.sleep(8)
+
     print('\n\n\n\n\n')

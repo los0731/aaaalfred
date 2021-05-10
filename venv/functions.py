@@ -103,8 +103,9 @@ def fnSnapshot(stock):
 		d_summary_1 = soup_single_str('#bizSummaryHeader', soup)
 		d_summary_2 = soup_single_str('#bizSummaryContent li:first-child', soup)
 		d_summary_3 = soup_single_str('#bizSummaryContent li:last-child', soup)
-		d_outstanding_shares = int(soup_single_str('#svdMainGrid1 table tr:last-child td:nth-child(2)', soup).split("/")[0].replace(',', ''))
 		d_treasury_shares = soup_single_str('#svdMainGrid5 table tr:nth-child(5) td:nth-child(3)', soup)
+		try:d_outstanding_shares = int(soup_single_str('#svdMainGrid1 table tr:last-child td:nth-child(2)', soup).split("/")[0].replace(',', ''))
+		except: d_outstanding_shares = 0
 		try: d_treasury_shares = int(d_treasury_shares)
 		except: d_treasury_shares = 0
 
@@ -168,6 +169,7 @@ def fnSnapshot(stock):
 			}
 		}
 	pp('크롤완료: 스냅샷')
+	# pp(dict)
 	return dict
 
 def fnFinance(stock):
@@ -433,7 +435,7 @@ def price_kimsUniversal(EPS, EPS_E, ROE, ROE_E, ROE_avg):
 	return value_100, value_90, value_80
 
 def price_RIM(ROE, ROE_E, ROE_avg, 자본, 자본_E, 자본_avg, 주식수):
-	요구수익률 = 0.0805
+	요구수익률 = 0.0821
 
 	def rim(roe, equity, 지속계수):
 		Y10 = {
@@ -478,3 +480,29 @@ def price_RIM(ROE, ROE_E, ROE_avg, 자본, 자본_E, 자본_avg, 주식수):
 		value_80 = None
 	
 	return value_100, value_90, value_80
+
+def PEG(EPS4y, EPS3y, EPS2y, EPS1y, EPS1E, PER, PER_E, dividend):
+	'''
+		r1: eps 4년-3년 성장률
+		r2: eps 3년-2년 성장률
+		r3: eps 2년-1년 성장률
+		r1E: eps 1년-1E년 성장률
+		per: 최근 per
+		dividend: 최근 배당
+	'''
+
+	r1 = yieldRate(EPS3y, EPS4y)
+	r2 = yieldRate(EPS2y, EPS3y)
+	r3 = yieldRate(EPS1y, EPS2y)
+	if EPS1E == None:
+		r1E = (r1 + (r2*2) + (r3*3)) / 6
+	else:
+		r1E = yieldRate(EPS1E, EPS1y)
+	
+	if PER_E == None:
+		PER_E = PER
+
+	장기성장률 = (r1 + (r2*2) + (r3*3) + (r1E*6)) / 12
+	result = round((장기성장률 + dividend) / PER_E, 2)
+
+	return result
