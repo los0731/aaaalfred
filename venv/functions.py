@@ -8,6 +8,9 @@ from datetime import datetime, timedelta
 from pprintpp import pprint as pp
 import numpy_financial as npf
 
+# 범용 변수
+ua = UserAgent()
+
 
 # 범용 함수
 def soup_single_str(location, soup):
@@ -67,7 +70,7 @@ def today():
 def fnSnapshot(stock):
 	# fnguide 기업정보 > snapshot
 	with req.Session() as s:
-		ua = UserAgent()
+		# ua = UserAgent()
 		headers = {
 			'user-agent': ua.random,
 			'referer': 'http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?pGB=1&gicode=A005930&cID=&MenuYn=Y&ReportGB=&NewMenuID=101&stkGb=701'
@@ -175,7 +178,7 @@ def fnSnapshot(stock):
 def fnFinance(stock):
 	# fnguide 기업정보 > 재무제표
 	with req.Session() as s:
-		ua = UserAgent()
+		# ua = UserAgent()
 		headers = {
 			'user-agent': ua.random,
 			'referer': 'http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?pGB=1&gicode=A005930&cID=&MenuYn=Y&ReportGB=&NewMenuID=101&stkGb=701'
@@ -209,7 +212,7 @@ def fnFinance(stock):
 def fnInvest(stock):
 	# fnguide 기업정보 > 재무제표
 	with req.Session() as s:
-		ua = UserAgent()
+		# ua = UserAgent()
 		headers = {
 			'user-agent': ua.random,
 			'referer': 'http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?pGB=1&gicode=A005930&cID=&MenuYn=Y&ReportGB=&NewMenuID=101&stkGb=701'
@@ -237,7 +240,7 @@ def fnInvest(stock):
 def fnRatio(stock):
 	# fnguide 기업정보 > 재무제표
 	with req.Session() as s:
-		ua = UserAgent()
+		# ua = UserAgent()
 		headers = {
 			'user-agent': ua.random,
 			'referer': 'http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?pGB=1&gicode=A005930&cID=&MenuYn=Y&ReportGB=&NewMenuID=101&stkGb=701'
@@ -268,7 +271,7 @@ def fnRatio(stock):
 def fnConsensus(stock):
 	# fnguide 기업정보 > 컨센서스
 	with req.Session() as s:
-		ua = UserAgent()
+		# ua = UserAgent()
 		url = 'https://comp.fnguide.com/SVO2/json/data/01_06/03_A{}.json'.format(stock)
 		headers = {
 			'user-agent': ua.random,
@@ -301,7 +304,7 @@ def fnConsensus(stock):
 def nvMain(stock):
 	# naver 메인
 	with req.Session() as s:
-		ua = UserAgent()
+		# ua = UserAgent()
 		headers = {
 			'user-agent': ua.random,
 			'referer': 'https://finance.naver.com/'
@@ -324,7 +327,7 @@ def nvMain(stock):
 def nvPrice(stock):
 	# naver 주가
 	with req.Session() as s:
-		ua = UserAgent()
+		# ua = UserAgent()
 		url = 'https://m.stock.naver.com/api/item/getTrendList.nhn?code={}&size=30'.format(str(stock))
 		headers = {
 			'user-agent': ua.random,
@@ -372,7 +375,7 @@ def nvPrice(stock):
 def hankyungIndustry():
 	with req.Session() as s:
 		date = today()
-		ua = UserAgent()
+		# ua = UserAgent()
 		url = 'http://consensus.hankyung.com/apps.analysis/analysis.list?skinType=industry&search_date=1w&search_text=&now_page=1&type=more'
 		headers = {
 			'user-agent': ua.safari,
@@ -435,7 +438,7 @@ def price_kimsUniversal(EPS, EPS_E, ROE, ROE_E, ROE_avg):
 	return value_100, value_90, value_80
 
 def price_RIM(ROE, ROE_E, ROE_avg, 자본, 자본_E, 자본_avg, 주식수):
-	요구수익률 = 0.0821
+	요구수익률 = 0.0775
 
 	def rim(roe, equity, 지속계수):
 		Y10 = {
